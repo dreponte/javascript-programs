@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loop Operations</title>
+</head>
+<body>
+
+    <h2>Loop Operations</h2>
+
+    <label>Enter an Integer (n):</label>
+    <input type="number" id="number" placeholder="Enter a number">
+
+    <br><br>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <h3 id="result"></h3>
+
+    <script>
+
+        function calculate() {
+
+            let n = parseInt(document.getElementById("number").value);
+
+            if (document.getElementById("number").value === "" ||
+                !Number.isInteger(Number(document.getElementById("number").value)) ||
+                n < 1 || n > 170) {
+
+                document.getElementById("result").innerHTML =
+                    "Please enter an integer from 1 to 170.";
+                return;
+            }
+
+            // 1. Factorial using WHILE LOOP
+
+            let factorial = 1;
+            let i = 1;
+
+            while (i <= n) {
+                factorial = factorial * i;
+                i++;
+            }
+
+
+            // 2. Sum using DO WHILE LOOP
+
+            let sum = 0;
+            let j = 1;
+
+            do {
+                sum = sum + j;
+                j++;
+            } while (j <= n);
+
+
+            // 3. Average using FOR LOOP
+
+            let total = 0;
+
+            for (let k = 1; k <= n; k++) {
+                total = total + k;
+            }
+
+            let average = total / n;
+
+
+            // Display Results
+
+            document.getElementById("result").innerHTML =
+                "Factorial of " + n + " = " + factorial +
+                "<br>Sum of the first " + n + " numbers = " + sum +
+                "<br>Average of the first " + n + " numbers = " + average.toFixed(2);
+
+        }
+
+    </script>
+
+</body>
+</html>

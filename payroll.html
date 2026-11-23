@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payroll System</title>
+</head>
+<body>
+
+    <h2>Payroll System</h2>
+
+    <h3>Employee Information</h3>
+
+    <label>Employee Name:</label>
+    <input type="text" id="name" placeholder="Enter employee name">
+
+    <br><br>
+
+    <label>Days Worked:</label>
+    <input type="number" id="days" placeholder="Enter days worked">
+
+    <br><br>
+
+    <label>Daily Rate:</label>
+    <input type="number" id="rate" placeholder="Enter daily rate">
+
+    <br><br>
+
+    <label>Deduction Amount:</label>
+    <input type="number" id="deduction" placeholder="Enter deduction">
+
+    <br><br>
+
+    <button onclick="addEmployee()">Add Employee</button>
+
+    <h3>Payroll List</h3>
+
+    <table border="1" cellpadding="8" id="payrollTable">
+        <tr>
+            <th>No.</th>
+            <th>Employee Name</th>
+            <th>Days Worked</th>
+            <th>Daily Rate</th>
+            <th>Gross Pay</th>
+            <th>Deduction Amount</th>
+            <th>Net Pay</th>
+        </tr>
+    </table>
+
+    <br>
+
+    <h3>Delete Employee</h3>
+
+    <label>Enter Line Number:</label>
+    <input type="number" id="lineNumber" placeholder="Enter line number">
+
+    <button onclick="deleteEmployee()">Delete Employee</button>
+
+    <script>
+
+        let employees = [];
+
+        // ADD EMPLOYEE
+
+        function addEmployee() {
+
+            let name = document.getElementById("name").value;
+            let days = parseFloat(document.getElementById("days").value);
+            let rate = parseFloat(document.getElementById("rate").value);
+            let deduction = parseFloat(document.getElementById("deduction").value);
+
+            if (name.trim() === "" ||
+                document.getElementById("days").value === "" ||
+                document.getElementById("rate").value === "" ||
+                document.getElementById("deduction").value === "") {
+
+                alert("Please complete all employee information.");
+                return;
+            }
+
+            if (!Number.isFinite(days) || !Number.isFinite(rate) ||
+                !Number.isFinite(deduction) ||
+                days < 0 || rate < 0 || deduction < 0) {
+
+                alert("Please enter valid positive values.");
+                return;
+            }
+
+            let grossPay = days * rate;
+            let netPay = grossPay - deduction;
+
+            let employee = {
+                name: name,
+                days: days,
+                rate: rate,
+                grossPay: grossPay,
+                deduction: deduction,
+                netPay: netPay
+            };
+
+            employees.push(employee);
+
+            displayPayroll();
+
+            // Clear input fields
+
+            document.getElementById("name").value = "";
+            document.getElementById("days").value = "";
+            document.getElementById("rate").value = "";
+            document.getElementById("deduction").value = "";
+
+        }
+
+
+        // DISPLAY PAYROLL TABLE
+
+        function displayPayroll() {
+
+            let table = document.getElementById("payrollTable");
+
+            table.innerHTML = `
+                <tr>
+                    <th>No.</th>
+                    <th>Employee Name</th>
+                    <th>Days Worked</th>
+                    <th>Daily Rate</th>
+                    <th>Gross Pay</th>
+                    <th>Deduction Amount</th>
+                    <th>Net Pay</th>
+                </tr>
+            `;
+
+            for (let i = 0; i < employees.length; i++) {
+
+                table.innerHTML += `
+                    <tr>
+                        <td>${i + 1}</td>
+                        <td>${employees[i].name}</td>
+                        <td>${employees[i].days}</td>
+                        <td>${employees[i].rate.toFixed(2)}</td>
+                        <td>${employees[i].grossPay.toFixed(2)}</td>
+                        <td>${employees[i].deduction.toFixed(2)}</td>
+                        <td>${employees[i].netPay.toFixed(2)}</td>
+                    </tr>
+                `;
+
+            }
+
+        }
+
+
+        // DELETE EMPLOYEE
+
+        function deleteEmployee() {
+
+            let lineNumber = parseInt(
+                document.getElementById("lineNumber").value
+            );
+
+            if (document.getElementById("lineNumber").value === "" ||
+                !Number.isInteger(Number(document.getElementById("lineNumber").value)) ||
+                lineNumber < 1 || lineNumber > employees.length) {
+
+                alert("Invalid line number.");
+                return;
+            }
+
+            employees.splice(lineNumber - 1, 1);
+
+            displayPayroll();
+
+            document.getElementById("lineNumber").value = "";
+
+        }
+
+    </script>
+
+</body>
+</html>
